@@ -5,54 +5,69 @@
 #ifndef CPPEX5_ITERTOOLS_ACCUMULATE_HPP
 #define CPPEX5_ITERTOOLS_ACCUMULATE_HPP
 namespace itertools{
-    template <typename CONT>
+    typedef struct{
+        template <typename T>
+        T operator ()(T a, T b) const{
+            return a+b;
+        }
+    } plus;
+
+    template <typename CONT, typename  FUNC = plus>
     class accumulate{
         CONT _container;
+        FUNC _function;
+        typedef decltype(typename CONT::value_type()) value_type;
+    public:
+        explicit accumulate(CONT container, FUNC func = plus())
+                : _container(container), _function(func){}
 
-        template <typename IT>
-        class sum_iterator{
-            double _data = 0;
-            IT _iter;
+        class iterator{
+            decltype(*(_container.begin())) _data;
+            typename CONT::iterator _iter;
+            typename CONT::iterator _end;
+            FUNC _function;
         public:
-            explicit sum_iterator(IT iter): _iter(iter) {};
-            sum_iterator(const sum_iterator<IT>& other) = default;
-            sum_iterator& operator=(const sum_iterator<IT>& other){
+            explicit iterator(typename CONT::iterator iter, typename CONT::iterator end, FUNC func)
+                : _iter(iter), _end(end), _function(func), _data(*iter){};
+            iterator(const iterator& other) = default;
+            iterator& operator=(const iterator& other){
                 this->_data = other._data;
                 this->_iter = other._iter;
+                this->_end = other._end;
+                this->_function = other._function;
                 return *this;
             };
-            sum_iterator& operator ++(){
-                _data+= *_iter;
+            iterator& operator ++(){
                 ++_iter;
+                if(_iter != _end)
+                    _data = _function(_data, *_iter);
                 return *this;
             }
-            sum_iterator operator ++(int){
-                sum_iterator tmp = *this;
-                _data += *_iter;
-                ++_iter;
+            const iterator operator ++(int){
+                iterator tmp = *this;
+                ++(*this);
                 return tmp;
             }
-            bool operator ==(const sum_iterator& other) {
+            bool operator ==(const iterator& other) {
                 return (_iter == other._iter);
             }
-            bool operator !=(const sum_iterator& other) {
+            bool operator !=(const iterator& other) {
                 return (_iter != other._iter);
             }
 
-            double operator *(){
+            auto operator *(){
                 return _data;
             }
         };
 
-    public:
-        accumulate(CONT container): _container(container){}
 
-        sum_iterator begin(){
-            return sum_iterator(_container.begin());
+        iterator begin(){
+            return iterator(_container.begin(), _container.end(), _function);
         }
-        sum_iterator end(){
-            return sum_iterator(_container.end());
+        iterator end(){
+            return iterator(_container.end(), _container.end(), _function);
         }
+
     };
 }
 

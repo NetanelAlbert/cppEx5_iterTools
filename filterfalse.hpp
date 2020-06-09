@@ -10,9 +10,9 @@
 
 namespace itertools{
     template<typename FUNC, typename CONT>
-    std::vector<int> filterfalse(FUNC f, CONT container){
-        std::vector<int> ans;
-        for(int i : container){
+    auto filterfalse(FUNC f, CONT container){
+        std::vector<decltype(typename CONT::value_type())> ans;
+        for(decltype(typename CONT::value_type()) i : container){
             if( !(f(i) ))
                 ans.push_back(i);
         }

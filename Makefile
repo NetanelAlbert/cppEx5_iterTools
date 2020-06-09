@@ -3,8 +3,8 @@
 CXX=clang++-9 
 CXXFLAGS=-std=c++2a
 
-HEADERS= accumulate.hpp filterfalse.hpp range.hpp compress.hpp
-OBJECTS= accumulate.o filterfalse.o range.o compress.o
+HEADERS=  range.hpp accumulate.hpp filterfalse.hpp compress.hpp
+OBJECTS=
 
 run: demo
 	./$^
