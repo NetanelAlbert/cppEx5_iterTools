@@ -1,11 +1,10 @@
+
 //
 // Created by nati on 08/06/2020.
 //
 
 #ifndef CPPEX5_ITERTOOLS_ACCUMULATE_HPP
 #define CPPEX5_ITERTOOLS_ACCUMULATE_HPP
-
-#include <iostream>
 namespace itertools{
     typedef struct{
         template <typename T>
@@ -24,15 +23,13 @@ namespace itertools{
                 : _container(container), _function(func){}
 
         class iterator{
-            value_type _data;
+            decltype(*(_container.begin())) _data;
             typename CONT::iterator _iter;
             typename CONT::iterator _end;
             FUNC _function;
         public:
             explicit iterator(typename CONT::iterator iter, typename CONT::iterator end, FUNC func)
-                : _iter(iter), _end(end), _function(func), _data(*iter){
-                std::cout << "accumulate iterator constructed, data:" << _data << std::endl;
-            }
+                    : _iter(iter), _end(end), _function(func), _data(*iter){};
             iterator(const iterator& other) = default;
             iterator& operator=(const iterator& other){
                 if(this != &other) {
