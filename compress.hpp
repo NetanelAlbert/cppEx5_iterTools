@@ -33,7 +33,9 @@ namespace itertools{
             iterator(const iterator& other) = default;
 
             iterator& operator=(const iterator& other){
-                this->_iter = other._iter;
+                if(this != &other){
+                    this->_iter = other._iter;
+                }
                 return *this;
             };
             iterator& operator ++(){
