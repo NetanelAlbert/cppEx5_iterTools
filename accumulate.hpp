@@ -4,6 +4,8 @@
 
 #ifndef CPPEX5_ITERTOOLS_ACCUMULATE_HPP
 #define CPPEX5_ITERTOOLS_ACCUMULATE_HPP
+
+#include <iostream>
 namespace itertools{
     typedef struct{
         template <typename T>
@@ -16,25 +18,29 @@ namespace itertools{
     class accumulate{
         CONT _container;
         FUNC _function;
-        typedef decltype(typename CONT::value_type()) value_type;
+        typedef typename CONT::value_type value_type;
     public:
         explicit accumulate(CONT container, FUNC func = plus())
                 : _container(container), _function(func){}
 
         class iterator{
-            decltype(*(_container.begin())) _data;
+            value_type _data;
             typename CONT::iterator _iter;
             typename CONT::iterator _end;
             FUNC _function;
         public:
             explicit iterator(typename CONT::iterator iter, typename CONT::iterator end, FUNC func)
-                : _iter(iter), _end(end), _function(func), _data(*iter){};
+                : _iter(iter), _end(end), _function(func), _data(*iter){
+                std::cout << "accumulate iterator constructed, data:" << _data << std::endl;
+            }
             iterator(const iterator& other) = default;
             iterator& operator=(const iterator& other){
-                this->_data = other._data;
-                this->_iter = other._iter;
-                this->_end = other._end;
-                this->_function = other._function;
+                if(this != &other) {
+                    this->_data = other._data;
+                    this->_iter = other._iter;
+                    this->_end = other._end;
+                    this->_function = other._function;
+                }
                 return *this;
             };
             iterator& operator ++(){
@@ -43,7 +49,7 @@ namespace itertools{
                     _data = _function(_data, *_iter);
                 return *this;
             }
-            const iterator operator ++(int){
+            iterator operator ++(int){
                 iterator tmp = *this;
                 ++(*this);
                 return tmp;

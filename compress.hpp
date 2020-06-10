@@ -10,17 +10,62 @@
 
 namespace itertools{
     template<typename CONT1, typename CONT2>
-    auto compress(CONT1 cont1, CONT2 cont2){
-        std::vector<typename CONT1::value_type()> ans;
-        typename CONT1::iterator it1 = cont1.begin();
-        typename CONT2::iterator it2 = cont2.begin();
+    class compress {
+        CONT1 _container;
+        CONT2 _bool_container;
+        typedef typename CONT1::value_type value_type;
 
-        for(typename CONT1::iterator end1 = cont1.end(); it1 != end1; ++it1, ++it2){
-            if(*it2)
-                ans.push_back(*it1);
+    public:
+        compress(CONT1 cont, CONT2 bool_cont): _container(cont), _bool_container(bool_cont){}
+
+        class iterator{
+            typename CONT1::iterator _iter;
+            typename CONT1::iterator _end;
+            typename CONT2::iterator _bool_iter;
+        public:
+            explicit iterator(typename CONT1::iterator iter, typename CONT1::iterator end, typename CONT2::iterator bool_iter)
+                : _iter(iter), _end(end), _bool_iter(bool_iter){
+                while (_iter != _end && !(*_bool_iter)){
+                    ++_iter;
+                    ++_bool_iter;
+                }
+            }
+            iterator(const iterator& other) = default;
+
+            iterator& operator=(const iterator& other){
+                this->_iter = other._iter;
+                return *this;
+            };
+            iterator& operator ++(){
+                do{
+                    ++_iter;
+                    ++_bool_iter;
+                } while (_iter != _end && !(*_bool_iter));
+                return *this;
+            }
+            iterator operator ++(int){
+                iterator tmp = *this;
+                ++(*this);
+                return tmp;
+            }
+            bool operator ==(const iterator& other) {
+                return (_iter == other._iter);
+            }
+            bool operator !=(const iterator& other) {
+                return (_iter != other._iter);
+            }
+            value_type operator *(){
+                return *_iter;
+            }
+
+        };
+        iterator begin(){
+            return iterator(_container.begin(), _container.end(), _bool_container.begin());
         }
-        return ans;
-    }
+        iterator end(){
+            return iterator(_container.end(), _container.end(), _bool_container.end());
+        }
+    };
 }
 
 

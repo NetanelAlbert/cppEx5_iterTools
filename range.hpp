@@ -17,7 +17,8 @@ namespace itertools{
             explicit iterator(int d): _data(d) {};
             iterator(const iterator& other) = default;
             iterator& operator=(const iterator& other){
-                this->_data = other._data;
+                if(this != &other)
+                    this->_data = other._data;
                 return *this;
             };
             iterator& operator ++(){
