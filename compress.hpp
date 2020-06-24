@@ -11,12 +11,12 @@
 namespace itertools{
     template<typename CONT1, typename CONT2>
     class compress {
-        CONT1 _container;
-        CONT2 _bool_container;
+        CONT1& _container;
+        CONT2& _bool_container;
         typedef typename CONT1::value_type value_type;
 
     public:
-        compress(CONT1 cont, CONT2 bool_cont): _container(cont), _bool_container(bool_cont){}
+        compress(CONT1& cont, CONT2& bool_cont): _container(cont), _bool_container(bool_cont){}
 
         class iterator{
             typename CONT1::iterator _iter;

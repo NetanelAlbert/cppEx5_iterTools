@@ -15,11 +15,11 @@ namespace itertools{
 
     template <typename CONT, typename  FUNC = plus>
     class accumulate{
-        CONT _container;
+        CONT& _container;
         FUNC _function;
         typedef typename CONT::value_type value_type;
     public:
-        explicit accumulate(CONT container, FUNC func = plus())
+        explicit accumulate(CONT& container, FUNC func = plus())
                 : _container(container), _function(func){}
 
         class iterator{

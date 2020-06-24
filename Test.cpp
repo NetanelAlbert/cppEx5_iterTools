@@ -16,6 +16,8 @@
 using namespace itertools;
 using namespace std;
 
+range range110(1,10);
+
 TEST_CASE("range max int size"){
     CHECK_NOTHROW(range r(1,std::numeric_limits<int>::max()););
     range r(1,std::numeric_limits<int>::max()/100);
@@ -33,7 +35,7 @@ TEST_CASE("range"){
 
 TEST_CASE("accumulate of range"){
     int j = 1;
-    for(int i : accumulate(range(1,10))){
+    for(int i : accumulate(range110)){
         CHECK(i == j*(j+1)/2);
         ++j;
     }
@@ -56,7 +58,7 @@ TEST_CASE("accumulate of range with function"){
     } func;
     int j = 1, sum = 1;
     func f;
-    for(int i : accumulate(range(1,10), f)){
+    for(int i : accumulate(range110, f)){
         CHECK(i == sum);
         sum = f(sum, ++j);
     }
@@ -82,9 +84,9 @@ TEST_CASE("filterfalse with range") {
             return i%3 == 1;
         }
     } func;
-
+    range range20(0,20);
     func f;
-    for (auto i : filterfalse(f, range(0,20))) {
+    for (auto i : filterfalse(f, range20)) {
                 CHECK(f(i) == false);
     }
 }
@@ -112,7 +114,8 @@ TEST_CASE("compress range"){
     for (int j = 1; j < 20; ++j) {
         b.push_back(j%2 == 1);
     }
-    for (auto i : compress(range(1,20), b)) {
+    range range120(1,20);
+    for (auto i : compress(range120, b)) {
                 CHECK(i%2 == 1);
     }
 }

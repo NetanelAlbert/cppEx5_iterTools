@@ -12,11 +12,11 @@ namespace itertools{
     template<typename FUNC, typename CONT>
     class filterfalse {
         FUNC _f;
-        CONT _container;
+        CONT& _container;
         typedef typename CONT::value_type value_type;
 
     public:
-        filterfalse(FUNC f, CONT container): _f(f), _container(container){}
+        filterfalse(FUNC f, CONT& container): _f(f), _container(container){}
 
         class iterator{
             typename CONT::iterator _iter;
