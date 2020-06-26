@@ -17,6 +17,7 @@ namespace itertools{
 
     public:
         filterfalse(FUNC f, CONT& container): _f(f), _container(container){}
+        filterfalse(FUNC f, CONT&& container): _f(f), _container(container){}
 
         class iterator{
             typename CONT::iterator _iter;

@@ -5,6 +5,8 @@
 
 #ifndef CPPEX5_ITERTOOLS_ACCUMULATE_HPP
 #define CPPEX5_ITERTOOLS_ACCUMULATE_HPP
+
+#include <iostream>
 namespace itertools{
     typedef struct{
         template <typename T>
@@ -20,6 +22,8 @@ namespace itertools{
         typedef typename CONT::value_type value_type;
     public:
         explicit accumulate(CONT& container, FUNC func = plus())
+                : _container(container), _function(func){}
+        explicit accumulate(CONT&& container, FUNC func = plus())
                 : _container(container), _function(func){}
 
         class iterator{

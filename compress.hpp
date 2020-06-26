@@ -17,6 +17,9 @@ namespace itertools{
 
     public:
         compress(CONT1& cont, CONT2& bool_cont): _container(cont), _bool_container(bool_cont){}
+        compress(CONT1&& cont, CONT2&& bool_cont): _container(cont), _bool_container(bool_cont){}
+        compress(CONT1&& cont, CONT2& bool_cont): _container(cont), _bool_container(bool_cont){}
+        compress(CONT1& cont, CONT2&& bool_cont): _container(cont), _bool_container(bool_cont){}
 
         class iterator{
             typename CONT1::iterator _iter;

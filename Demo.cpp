@@ -34,8 +34,7 @@ int main(int argc, const char * argv[]) {
 
     cout << "####  accumulate:  ####";
     cout << endl << "accumulate of range: " << endl;
-    range range59(5,9);
-    for (int i: accumulate(range59))
+    for (int i: accumulate(range(5,9)))
         cout << i << " ";      // 5 11 18 26
 
     cout << endl << "accumulate of vector<string>: " << endl;
@@ -44,7 +43,7 @@ int main(int argc, const char * argv[]) {
     cout << endl << endl;
 
     cout << endl << "accumulate of range with binary operator: " << endl;
-    for (int i: accumulate(range59, [](int x, int y){return x*y;}))
+    for (int i: accumulate(range(5,9), [](int x, int y){return x*y;}))
         cout << i << " ";      // 5 30 210 1680
 
     cout << "####  Filter False:  ####";
@@ -52,7 +51,7 @@ int main(int argc, const char * argv[]) {
     for (auto i: filterfalse(lessThan3{}, vecInt) )
         cout << i << " ";   // 3 4
     cout << endl << "Filter out all even numbers in range(5,9): " << endl;
-    for (auto i: filterfalse([](int i){return i%2==0;}, range59) )
+    for (auto i: filterfalse([](int i){return i%2==0;}, range(5,9)) )
         cout << i << " ";   // 5 7
     cout << endl << endl;
 
@@ -60,12 +59,11 @@ int main(int argc, const char * argv[]) {
     vector<bool> ttft {true,true,false,true};
 
     cout << endl << "compress a string" << endl;
-    string abcd("abcd");
-    for (auto i: compress(abcd, ttft))
+    for (auto i: compress(string("abcd"), ttft))
         cout << i << " ";  // a b d
 
     cout << endl << "compress a range" << endl;
-    for (auto i: compress(range59, ttft))
+    for (auto i: compress(range(5,9), ttft))
         cout << i << " ";  // 5 6 8
     cout << endl << endl;
 
